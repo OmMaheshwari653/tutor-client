@@ -66,6 +66,8 @@ const Batch = () => {
   const [expandedChapter, setExpandedChapter] = useState(null);
   const [chapterDoubts, setChapterDoubts] = useState({});
   const [chapterProgress, setChapterProgress] = useState({}); // Track homework progress
+  const [loadingNotes, setLoadingNotes] = useState({});
+  const [chapterNotes, setChapterNotes] = useState({});
 
   // Fetch course details on mount
   useEffect(() => {
@@ -169,6 +171,26 @@ const Batch = () => {
         ...prev,
         [chapterId]: [],
       }));
+    }
+  };
+
+  // Fetch chapter notes on-demand
+  const fetchChapterNotes = async (chapterId) => {
+    if (loadingNotes[chapterId] || chapterNotes[chapterId]) return;
+
+    setLoadingNotes(prev => ({ ...prev, [chapterId]: true }));
+
+    try {
+      const data = await apiCall(API_ENDPOINTS.CHAPTER_NOTES(chapterId));
+      
+      if (data.success) {
+        setChapterNotes(prev => ({ ...prev, [chapterId]: data.notes }));
+        toast.success(data.cached ? "Notes loaded" : "Notes generated!");
+      }
+    } catch (err) {
+      toast.error("Failed to load notes");
+    } finally {
+      setLoadingNotes(prev => ({ ...prev, [chapterId]: false }));
     }
   };
 
@@ -635,14 +657,14 @@ const Batch = () => {
                 )}
 
                 {/* AI Generated Notes - NOW BELOW VIDEOS */}
-                {chapter.ai_generated_notes && (
-                  <Card sx={styles.notesCard}>
-                    <Typography
-                      variant="subtitle1"
-                      sx={{ color: aliceBlueColor, fontWeight: "bold", mb: 2 }}
-                    >
-                      📝 AI Generated Study Notes
-                    </Typography>
+                <Card sx={styles.notesCard}>
+                  <Typography
+                    variant="subtitle1"
+                    sx={{ color: aliceBlueColor, fontWeight: "bold", mb: 2 }}
+                  >
+                    📝 AI Generated Study Notes
+                  </Typography>
+                  {(chapter.ai_generated_notes || chapterNotes[chapter.id]) ? (
                     <Typography
                       variant="body2"
                       sx={{
@@ -651,10 +673,32 @@ const Batch = () => {
                         whiteSpace: "pre-wrap",
                       }}
                     >
-                      {chapter.ai_generated_notes}
+                      {chapter.ai_generated_notes || chapterNotes[chapter.id]}
                     </Typography>
-                  </Card>
-                )}
+                  ) : (
+                    <Box textAlign="center" py={2}>
+                      <Typography variant="body2" sx={{ color: captionColor, mb: 2 }}>
+                        Notes not generated yet. Click below to generate AI study notes.
+                      </Typography>
+                      <Button
+                        variant="contained"
+                        onClick={() => fetchChapterNotes(chapter.id)}
+                        disabled={loadingNotes[chapter.id]}
+                        sx={{
+                          bgcolor: aliceBlueColor,
+                          color: blackBoardColor,
+                          "&:hover": { bgcolor: "#4fd1c7" },
+                        }}
+                      >
+                        {loadingNotes[chapter.id] ? (
+                          <><CircularProgress size={20} sx={{ mr: 1 }} /> Generating...</>
+                        ) : (
+                          "Generate Notes"
+                        )}
+                      </Button>
+                    </Box>
+                  )}
+                </Card>
 
                 {/* Previous Doubts Section */}
                 <Card sx={{ ...styles.notesCard, mb: 3 }}>
