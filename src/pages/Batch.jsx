@@ -34,6 +34,7 @@ import {
   Schedule as TimeIcon,
   School as CourseIcon,
   QuestionAnswer as DoubtIcon,
+  EmojiEvents,
 } from "@mui/icons-material";
 import AppLayout from "../components/layouts/AppLayout";
 import ModernChatDialog from "../components/specific/ModernChatDialog";
@@ -178,19 +179,19 @@ const Batch = () => {
   const fetchChapterNotes = async (chapterId) => {
     if (loadingNotes[chapterId] || chapterNotes[chapterId]) return;
 
-    setLoadingNotes(prev => ({ ...prev, [chapterId]: true }));
+    setLoadingNotes((prev) => ({ ...prev, [chapterId]: true }));
 
     try {
       const data = await apiCall(API_ENDPOINTS.CHAPTER_NOTES(chapterId));
-      
+
       if (data.success) {
-        setChapterNotes(prev => ({ ...prev, [chapterId]: data.notes }));
+        setChapterNotes((prev) => ({ ...prev, [chapterId]: data.notes }));
         toast.success(data.cached ? "Notes loaded" : "Notes generated!");
       }
     } catch (err) {
       toast.error("Failed to load notes");
     } finally {
-      setLoadingNotes(prev => ({ ...prev, [chapterId]: false }));
+      setLoadingNotes((prev) => ({ ...prev, [chapterId]: false }));
     }
   };
 
@@ -664,7 +665,7 @@ const Batch = () => {
                   >
                     📝 AI Generated Study Notes
                   </Typography>
-                  {(chapter.ai_generated_notes || chapterNotes[chapter.id]) ? (
+                  {chapter.ai_generated_notes || chapterNotes[chapter.id] ? (
                     <Typography
                       variant="body2"
                       sx={{
@@ -677,8 +678,12 @@ const Batch = () => {
                     </Typography>
                   ) : (
                     <Box textAlign="center" py={2}>
-                      <Typography variant="body2" sx={{ color: captionColor, mb: 2 }}>
-                        Notes not generated yet. Click below to generate AI study notes.
+                      <Typography
+                        variant="body2"
+                        sx={{ color: captionColor, mb: 2 }}
+                      >
+                        Notes not generated yet. Click below to generate AI
+                        study notes.
                       </Typography>
                       <Button
                         variant="contained"
@@ -691,7 +696,10 @@ const Batch = () => {
                         }}
                       >
                         {loadingNotes[chapter.id] ? (
-                          <><CircularProgress size={20} sx={{ mr: 1 }} /> Generating...</>
+                          <>
+                            <CircularProgress size={20} sx={{ mr: 1 }} />{" "}
+                            Generating...
+                          </>
                         ) : (
                           "Generate Notes"
                         )}

@@ -18,7 +18,7 @@ export const API_ENDPOINTS = {
   // Chapter endpoints
   CHAPTER_DETAIL: (courseId, chapterId) =>
     `${API_BASE_URL}/api/course/${courseId}/chapter/${chapterId}`,
-  CHAPTER_NOTES: (chapterId) => 
+  CHAPTER_NOTES: (chapterId) =>
     `${API_BASE_URL}/api/chapters/${chapterId}/notes`,
 
   // Chat endpoints
