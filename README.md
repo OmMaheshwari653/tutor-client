@@ -1,12 +1,31 @@
-# React + Vite
+# Tutor AI – React + Vite
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Tutor AI ek AI-powered tutoring web app hai jo students ko personalized help, explanations aur practice provide karta hai. Yeh project React + Vite par bana hai, jisme fast development experience, Hot Module Replacement (HMR) aur basic ESLint rules use kiye gaye hain.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- AI-based chat tutor jo concepts explain karta hai aur doubts clear karta hai.
+- Subject/course selection (jaise Maths, Science, Programming, etc.).
+- Question–answer history taaki student apni previous queries dekh sake.
+- Responsive UI jo mobile aur desktop dono par achha kaam karta hai.
+- Clean React component structure with Vite build setup.
 
-## Expanding the ESLint configuration
+## Tech Stack
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- **Frontend:** React + Vite
+- **Language:** JavaScript (yaa TypeScript agar use kar rahe ho)
+- **Styling:** CSS / Tailwind CSS / Material UI (jo bhi tumne use kiya ho)
+- **State Management:** React hooks (useState, useEffect, useContext, etc.)
+- **AI Integration:** REST API (OpenAI / Gemini / custom model, jo bhi tumne use kiya ho)
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js aur npm installed hone chahiye.
+- Git (agar repo clone karna hai).
+
+### Installation
+
+1. Repository clone karo:
+
